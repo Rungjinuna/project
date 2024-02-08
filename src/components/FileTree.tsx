@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faFolderPlus, faFileCirclePlus } from "@fortawesome/free-solid-svg-icons"
-import { ControlledTreeEnvironment, Tree, InteractionMode, TreeItem, TreeItemIndex } from "react-complex-tree"
+import { faFolderPlus, faFileCirclePlus, faFile, faFolder } from "@fortawesome/free-solid-svg-icons"
+import { ControlledTreeEnvironment, Tree, TreeItem, TreeItemIndex } from "react-complex-tree"
 import { useAppDispatch, useAppSelector } from "../hooks/redux"
 import { FileState, addFileAsync, addFolderAsync, fetchFiles, selectFile } from "../store/file/fileSlice"
-import { renderers } from "./renderers"
 
 const FileTree = () => {
   const dispatch = useAppDispatch()
   const [name, setName] = useState("")
   const [showInputForItem, setShowInputForItem] = useState(false)
   const [showInputForFolder, setShowInputForFolder] = useState(false)
-  const files = useAppSelector(state => state.files.files)
+  const files = useAppSelector(state => state.files.fileItems)
   const selectedFileId = useAppSelector(state => state.files.selectedFileId)
 
   useEffect(() => {
@@ -49,10 +48,9 @@ const FileTree = () => {
     dispatch(addFolderAsync(name))
   }
 
-  const items: Record<TreeItemIndex, TreeItem<FileState>> = {} // 아이템 객체 초기화
+  const items: Record<TreeItemIndex, TreeItem<FileState>> = {}
 
   files.forEach(file => {
-    // 파일 및 폴더를 TreeItem으로 변환하여 items에 추가
     items[file.id] = {
       index: file.id,
       data: file,
@@ -69,16 +67,23 @@ const FileTree = () => {
 
   return (
     <ControlledTreeEnvironment
-      items={items} // 파일 및 폴더 데이터 전달
+      items={items}
       getItemTitle={item => item.data.name}
       viewState={{}}
+      canSearch={true}
       canDragAndDrop={true}
       canDropOnFolder={true}
       canReorderItems={true}
-      defaultInteractionMode={InteractionMode.ClickItemToExpand}
-      onRenameItem={(item, newName) => alert(`${item.data.name} renamed to ${newName}`)}
-      onSelectItems={handleSelectItem}
-      {...renderers}
+      onStartRenamingItem={(item, newName) => alert(`${item.data.name} renamed to ${newName}`)}
+      renderItem={({ item, depth, children, title }) => (
+        <div style={{ paddingLeft: `${depth * 20}px` }} onClick={() => handleSelectItem([item.index], "tree")}>
+          {/* 아이콘과 제목 렌더링 */}
+          {item.data.isFolder ? <FontAwesomeIcon icon={faFolder} /> : <FontAwesomeIcon icon={faFile} />}
+          {title}
+          {/* 하위 아이템들 */}
+          {children}
+        </div>
+      )}
     >
       <div className="flex justify-between space-x-2 mb-7 items-center mt-3 px-4">
         <h3 className="text-2xl text-white">Project</h3>
@@ -114,7 +119,7 @@ const FileTree = () => {
         )}
       </div>
       <div style={{ color: "#e3e3e3", borderTop: "1px solid #e3e3e3", paddingTop: "30px" }}>
-        <Tree treeId="tree-2" rootItem="root" treeLabel="Tree Example" />
+        <Tree treeId="tree" rootItem="root" treeLabel="Tree" />
       </div>
     </ControlledTreeEnvironment>
   )

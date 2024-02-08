@@ -13,13 +13,14 @@ export interface FileState {
 }
 
 export interface FilesState {
-  files: FileState[]
+  files: any
+  fileItems: FileState[] // 'files'를 'fileItems'로 변경
   selectedFileId: string | null
   openTabs: string[] // 열려 있는 탭들의 ID 목록
 }
 
 const initialState: FilesState = {
-  files: [],
+  fileItems: [], // 'files'를 'fileItems'로 변경
   selectedFileId: null,
   openTabs: []
 }
@@ -77,7 +78,7 @@ export const fileSlice = createSlice({
         isFolder: false,
         content: "" // 새 파일의 기본 내용
       }
-      state.files.push(newFile)
+      state.fileItems.push(newFile) // 'state.files'를 'state.fileItems'로 변경
       console.log("File added:", newFile) // 추가된 파일 확인
     },
     addFolder: (state, action: PayloadAction<string>) => {
@@ -87,7 +88,7 @@ export const fileSlice = createSlice({
         isFolder: true,
         children: []
       }
-      state.files.push(newFolder)
+      state.fileItems.push(newFolder) // 'state.files'를 'state.fileItems'로 변경
       console.log("Folder added:", newFolder) // 추가된 폴더 확인
     },
     selectFile: (state, action: PayloadAction<string>) => {
@@ -103,7 +104,7 @@ export const fileSlice = createSlice({
     },
     updateFileContent: (state, action: PayloadAction<{ fileId: string; content: string }>) => {
       const { fileId, content } = action.payload
-      const file = state.files.find(file => file.id === fileId)
+      const file = state.fileItems.find(file => file.id === fileId) // 'state.files'를 'state.fileItems'로 변경
       if (file) {
         file.content = content
         console.log("File content updated:", file) // 파일 내용 업데이트 확인
@@ -113,24 +114,24 @@ export const fileSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(addFileAsync.fulfilled, (state, action) => {
-        state.files.push(action.payload) // 파일 추가
+        state.fileItems.push(action.payload) // 'state.files'를 'state.fileItems'로 변경
         console.log("File added:", action.payload) // 추가된 파일 확인
       })
       .addCase(addFolderAsync.fulfilled, (state, action) => {
-        state.files.push(action.payload) // 폴더 추가
+        state.fileItems.push(action.payload) // 'state.files'를 'state.fileItems'로 변경
         console.log("Folder added:", action.payload) // 추가된 폴더 확인
       })
       .addCase(fetchFiles.fulfilled, (state, action) => {
         // 패치된 데이터로 상태 업데이트
-        state.files = action.payload
+        state.fileItems = action.payload // 'state.files'를 'state.fileItems'로 변경
         console.log("Fetched files:", action.payload) // 가져온 파일 확인
       })
   }
 })
 
-export const selectFiles = (state: RootState) => state.files.files
+export const selectFiles = (state: RootState) => state.files.fileItems // 'state.files.files'를 'state.files.fileItems'로 변경
 export const selectSelectedFile = (state: RootState) =>
-  state.files.files.find(file => file.id === state.files.selectedFileId)
+  state.files.fileItems.find(file => file.id === state.files.selectedFileId) // 'state.files.files'를 'state.files.fileItems'로 변경
 
 export const { addFile, addFolder, selectFile, closeTab, updateFileContent } = fileSlice.actions
 
