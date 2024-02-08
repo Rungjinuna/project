@@ -1,0 +1,71 @@
+{
+  "files": [
+    {
+      "id": "root",
+      "name": "root",
+      "isFolder": true,
+      "children": [
+        "file1.js",
+        "folder1"
+      ],
+      "data": "Root item"
+    },
+    {
+      "id": "file1.js",
+      "name": "file1.js",
+      "isFolder": false,
+      "children": [],
+      "data": "File 1",
+      "content": "// File 1 content\nconsole.log('File 1');",
+      "lastModified": ""
+    },
+    {
+      "id": "folder1",
+      "name": "folder1",
+      "isFolder": true,
+      "children": [
+        "file2.js"
+      ],
+      "data": "Folder 1"
+    },
+    {
+      "id": "file2.js",
+      "name": "file2.js",
+      "isFolder": false,
+      "children": [],
+      "data": "File 2",
+      "content": "// File 2 content\nconsole.log('File 2');",
+      "lastModified": ""
+    },
+    {
+      "id": "ff4fad77-763a-4f4d-ab6b-6b022423caae",
+      "name": "gkgkgk",
+      "isFolder": false,
+      "content": ""
+    },
+    {
+      "id": "25ab6f1a-bf24-4bc4-a451-897759129704",
+      "name": "hello",
+      "isFolder": true,
+      "children": []
+    },
+    {
+      "id": "ad901f1b-7df9-4338-95f4-470ff96b1218",
+      "name": "hgihi",
+      "isFolder": true,
+      "children": []
+    },
+    {
+      "id": "493c1297-ba6b-4666-a455-29a32a668471",
+      "name": "파일입니다",
+      "isFolder": false,
+      "content": ""
+    },
+    {
+      "id": "42c2925d-26d4-43e9-a474-6ec0417e6d1e",
+      "name": "dlfma",
+      "isFolder": true,
+      "children": []
+    }
+  ]
+}
